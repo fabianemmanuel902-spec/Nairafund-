@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nairafund</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .phone-frame {
+            max-width: 380px;
+            margin: 0 auto;
+            border: 12px solid #111;
+            border-radius: 50px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.4);
+            background: #000;
+        }
+        
+        .gauge {
+            position: relative;
+            width: 220px;
+            height: 110px;
+            margin: 0 auto;
+        }
+        
+        .gauge-circle {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: conic-gradient(#22c55e 0deg 220deg, #eab308 220deg 300deg, #374151 300deg 360deg);
+            mask: radial-gradient(farthest-side, transparent calc(100% - 25px), black calc(100% - 24px));
+        }
+        
+        .nav-active {
+            color: #22c55e;
+        }
+        
+        .earnings {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #fbbf24;
+        }
+    </style>
+</head>
+<body class="bg-zinc-950 text-white min-h-screen flex items-center justify-center">
+    <div class="phone-frame">
+        <!-- MAIN APP CONTAINER -->
+        <div id="app" class="bg-black h-[680px] overflow-hidden relative flex flex-col">
+            
+            <!-- PAGE 1: MINING HOME -->
+            <div id="page-mining" class="flex-1 flex flex-col">
+                <!-- Header -->
+                <div class="flex items-center justify-between px-6 pt-8 pb-4 bg-zinc-900">
+                    <h1 class="text-2xl font-bold">Nairafund</h1>
+                    <i class="fa-solid fa-bell text-xl"></i>
+                </div>
+
+                <!-- Balance -->
+                <div class="mx-4 mt-4 bg-emerald-600 rounded-3xl p-5 shadow-inner">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-sm opacity-75">Balance</p>
+                            <p id="balance" class="text-3xl font-bold">₦2,450,780</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="flex items-center gap-2 text-emerald-200">
+                                <div class="w-3 h-3 bg-emerald-300 rounded-full animate-pulse"></div>
+                                <span class="text-sm font-medium">Mining Active</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mining Gauge -->
+                <div class="flex-1 flex flex-col items-center justify-center px-6 -mt-6">
+                    <div class="gauge">
+                        <div class="gauge-circle"></div>
+                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+                            <div class="flex justify-center mb-1">
+                                <div class="bg-yellow-400 text-black rounded-full w-10 h-10 flex items-center justify-center">
+                                    <i class="fa-solid fa-dollar-sign text-2xl"></i>
+                                </div>
+                            </div>
+                            <div id="daily-rate" class="text-5xl font-bold text-white">85,000</div>
+                            <p class="text-sm text-zinc-400">Naira/Day</p>
+                        </div>
+                    </div>
+
+                    <!-- Start Mining Button -->
+                    <button onclick="startMining()" id="start-btn"
+                        class="mt-8 w-full max-w-xs bg-emerald-500 hover:bg-emerald-600 transition py-4 rounded-3xl text-lg font-semibold shadow-lg">
+                        START MINING
+                    </button>
+
+                    <!-- Live Earnings -->
+                    <div class="mt-8 w-full max-w-xs">
+                        <div class="bg-zinc-900 rounded-2xl p-5 text-center">
+                            <p class="text-zinc-400 text-sm">Live Earnings</p>
+                            <div id="live-earnings" class="earnings">0.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Navigation -->
+                <div class="bg-zinc-900 border-t border-zinc-800 py-3 px-6">
+                    <div class="flex justify-between text-xs">
+                        <button onclick="switchPage(1)" class="flex flex-col items-center nav-active">
+                            <i class="fa-solid fa-house text-xl mb-1"></i>
+                            <span>Home</span>
+                        </button>
+                        <button onclick="switchPage(1)" class="flex flex-col items-center text-emerald-500">
+                            <i class="fa-solid fa-pickaxe text-xl mb-1"></i>
+                            <span>Mine</span>
+                        </button>
+                        <button onclick="switchPage(3)" class="flex flex-col items-center">
+                            <i class="fa-solid fa-wallet text-xl mb-1"></i>
+                            <span>Wallet</span>
+                        </button>
+                        <button onclick="switchPage(1)" class="flex flex-col items-center">
+                            <i class="fa-solid fa-users text-xl mb-1"></i>
+                            <span>Refer</span>
+                        </button>
+                        <button onclick="switchPage(1)" class="flex flex-col items-center">
+                            <i class="fa-solid fa-chart-line text-xl mb-1"></i>
+                            <span>Earnings</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE 2: WALLET / SIGNUP -->
+            <div id="page-wallet" class="hidden flex-1 flex flex-col bg-zinc-950">
+                <div class="p-6">
+                    <button onclick="switchPage(1)" class="flex items-center gap-2 text-emerald-400 mb-6">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span>Back</span>
+                    </button>
+                    
+                    <h2 class="text-2xl font-bold mb-6">Complete Your Profile</h2>
+                    
+                    <div class="space-y-5">
+                        <div>
+                            <label class="block text-sm text-zinc-400 mb-1">Full Name</label>
+                            <input id="full-name" type="text" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl px-5 py-4 focus:outline-none focus:border-emerald-500" placeholder="Victor Fabian">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-zinc-400 mb-1">Phone Number</label>
+                            <input id="phone" type="tel" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl px-5 py-4 focus:outline-none focus:border-emerald-500" placeholder="+234 801 234 5678">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-zinc-400 mb-1">Account Number</label>
+                            <input id="account" type="text" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl px-5 py-4 focus:outline-none focus:border-emerald-500" placeholder="1234567890">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-zinc-400 mb-1">Home Address</label>
+                            <textarea id="address" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl px-5 py-4 focus:outline-none focus:border-emerald-500 h-24" placeholder="Your full address"></textarea>
+                        </div>
+                        
+                        <button onclick="submitProfile()" 
+                            class="w-full bg-emerald-500 py-5 rounded-3xl text-lg font-semibold mt-8">
+                            SUBMIT
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE 3: CONGRATULATIONS & WITHDRAW -->
+            <div id="page-congrats" class="hidden flex-1 flex flex-col items-center justify-center bg-gradient-to-b from-emerald-900 to-zinc-950 p-6">
+                <div class="text-center">
+                    <div class="text-7xl mb-6">🎉</div>
+                    <h2 class="text-3xl font-bold mb-2">Congratulations!</h2>
+                    <p class="text-emerald-300">Your profile has been verified</p>
+                    
+                    <div class="my-10 bg-zinc-900 rounded-3xl p-8 w-full max-w-xs">
+                        <p class="text-zinc-400 text-sm mb-3">Available Balance</p>
+                        <p class="text-5xl font-bold text-emerald-400">₦2,450,780</p>
+                    </div>
+                    
+                    <button onclick="showWithdrawModal()" 
+                        class="w-full max-w-xs bg-yellow-500 text-black py-5 rounded-3xl text-xl font-bold">
+                        WITHDRAW NOW
+                    </button>
+                </div>
+            </div>
+
+            <!-- WITHDRAW MODAL -->
+            <div id="withdraw-modal" class="hidden fixed inset-0 bg-black/80 flex items-end z-50">
+                <div class="bg-zinc-900 w-full rounded-t-3xl p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-semibold">Withdraw Funds</h3>
+                        <button onclick="hideWithdrawModal()" class="text-3xl leading-none">×</button>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm mb-2">Enter Withdrawal Code</label>
+                            <input id="withdraw-code" type="text" maxlength="6" 
+                                class="w-full bg-zinc-800 text-center text-3xl tracking-widest py-6 rounded-2xl focus:outline-none focus:border-emerald-500 border border-zinc-700"
+                                placeholder="******">
+                        </div>
+                        
+                        <button onclick="buyCode()" 
+                            class="w-full py-4 border border-dashed border-yellow-500 text-yellow-400 rounded-2xl font-medium">
+                            Buy Withdrawal Code
+                        </button>
+                        
+                        <!-- Receipt Upload -->
+                        <div>
+                            <label class="block text-sm mb-2">Upload Payment Receipt</label>
+                            <div onclick="document.getElementById('receipt').click()" 
+                                class="border-2 border-dashed border-zinc-600 rounded-3xl h-32 flex items-center justify-center cursor-pointer hover:border-emerald-500 transition">
+                                <div class="text-center">
+                                    <i class="fa-solid fa-cloud-arrow-up text-3xl mb-2 text-zinc-400"></i>
+                                    <p class="text-sm text-zinc-400">Tap to upload receipt</p>
+                                </div>
+                            </div>
+                            <input type="file" id="receipt" class="hidden" accept="image/*">
+                        </div>
+                        
+                        <button onclick="processWithdrawal()" 
+                            class="w-full bg-emerald-500 py-5 rounded-3xl font-semibold text-lg">
+                            CONFIRM WITHDRAWAL
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BUY CODE PAGE -->
+            <div id="page-buycode" class="hidden flex-1 bg-zinc-950 p-6">
+                <button onclick="hideBuyCode()" class="flex items-center gap-2 text-emerald-400 mb-6">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Back</span>
+                </button>
+                
+                <h2 class="text-2xl font-bold mb-8">Buy Withdrawal Code</h2>
+                
+                <div class="bg-zinc-900 rounded-3xl p-6 mb-6">
+                    <p class="text-sm text-zinc-400">Payment ID / ILOT</p>
+                    <p class="text-2xl font-mono font-bold text-emerald-400">8158331002</p>
+                </div>
+                
+                <div class="space-y-4 text-sm">
+                    <div class="flex justify-between py-3 border-b border-zinc-800">
+                        <span class="text-zinc-400">Amount</span>
+                        <span class="font-medium">₦2,000</span>
+                    </div>
+                    <div class="flex justify-between py-3 border-b border-zinc-800">
+                        <span class="text-zinc-400">Payment Method</span>
+                        <span class="font-medium">Bank Transfer / USDT</span>
+                    </div>
+                    <div class="flex justify-between py-3">
+                        <span class="text-zinc-400">After Payment</span>
+                        <span class="text-emerald-400">Send receipt to support</span>
+                    </div>
+                </div>
+                
+                <button onclick="hideBuyCode()" 
+                    class="mt-10 w-full bg-yellow-400 text-black py-5 rounded-3xl font-bold">
+                    I HAVE PAID
+                </button>
+            </div>
+
+            <!-- SUCCESS NOTIFICATION -->
+            <div id="success-toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 bg-emerald-600 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3">
+                <i class="fa-solid fa-check-circle"></i>
+                <span id="toast-text">Your transaction is processing. Be patient!</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isMining = false;
+        let earningsInterval = null;
+        let currentEarnings = 0;
+
+        function switchPage(page) {
+            document.getElementById('page-mining').classList.add('hidden');
+            document.getElementById('page-wallet').classList.add('hidden');
+            document.getElementById('page-congrats').classList.add('hidden');
+            document.getElementById('page-buycode').classList.add('hidden');
+            
+            if (page === 1) {
+                document.getElementById('page-mining').classList.remove('hidden');
+            } else if (page === 2) {
+                document.getElementById('page-wallet').classList.remove('hidden');
+            } else if (page === 3) {
+                document.getElementById('page-congrats').classList.remove('hidden');
+            }
+        }
+
+        function startMining() {
+            if (isMining) return;
+            isMining = true;
+            
+            const btn = document.getElementById('start-btn');
+            btn.textContent = "MINING ACTIVE";
+            btn.classList.add('!bg-emerald-700', 'cursor-not-allowed');
+            
+            // Start live earnings
+            currentEarnings = 0;
+            document.getElementById('live-earnings').textContent = "0.00";
+            
+            earningsInterval = setInterval(() => {
+                currentEarnings += 124.5; // \~85k per day simulation
+                document.getElementById('live-earnings').textContent = currentEarnings.toFixed(2);
+            }, 800);
+        }
+
+        function submitProfile() {
+            const name = document.getElementById('full-name').value;
+            if (!name) {
+                alert("Please enter your full name");
+                return;
+            }
+            switchPage(3); // Go to congrats page
+        }
+
+        function showWithdrawModal() {
+            document.getElementById('withdraw-modal').classList.remove('hidden');
+            document.getElementById('withdraw-code').focus();
+        }
+
+        function hideWithdrawModal() {
+            document.getElementById('withdraw-modal').classList.add('hidden');
+        }
+
+        function buyCode() {
+            hideWithdrawModal();
+            document.getElementById('page-buycode').classList.remove('hidden');
+        }
+
+        function hideBuyCode() {
+            document.getElementById('page-buycode').classList.add('hidden');
+        }
+
+        function processWithdrawal() {
+            const code = document.getElementById('withdraw-code').value;
+            if (code.length < 4) {
+                alert("Please enter a valid withdrawal code");
+                return;
+            }
+            
+            hideWithdrawModal();
+            
+            // Show success toast
+            const toast = document.getElementById('success-toast');
+            toast.classList.remove('hidden');
+            document.getElementById('toast-text').textContent = "Your transaction is processing. Be patient!";
+            
+            setTimeout(() => {
+                toast.classList.add('hidden');
+                // Reset to mining page
+                switchPage(1);
+            }, 3500);
+        }
+
+        // Tailwind script already included
+        console.log("%cNairafund App Loaded Successfully! 🚀", "color: #22c55e; font-size: 16px; font-weight: bold");
+        
+        // Keyboard support for demo
+        document.addEventListener('keydown', function(e) {
+            if (e.key === "Escape") {
+                const modal = document.getElementById('withdraw-modal');
+                if (!modal.classList.contains('hidden')) hideWithdrawModal();
+            }
+        });
+    </script>
+</body>
+                  </html>
