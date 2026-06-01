@@ -3,75 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nairafund Dashboard</title>
+    <title>Nairafund</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
-        body {
-            font-family: 'Inter', system-ui, sans-serif;
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .nav-tab.active { 
+            color: #10b981; 
+            border-bottom: 3px solid #10b981; 
+            font-weight: 500;
         }
-        .nav-active {
-            color: #22c55e;
-            border-bottom: 3px solid #22c55e;
-        }
-        .mining-btn {
-            transition: all 0.4s ease;
-        }
+        .card { transition: transform 0.3s ease; }
+        .card:hover { transform: translateY(-4px); }
     </style>
 </head>
-<body class="bg-zinc-950 text-white min-h-screen">
+<body class="bg-zinc-950 text-zinc-100 min-h-screen">
 
     <!-- HEADER -->
-    <header class="bg-zinc-900 border-b border-zinc-800 py-4 px-6 flex items-center justify-between">
-        <h1 class="text-3xl font-bold text-emerald-400">Nairafund</h1>
-        <div class="flex items-center gap-6">
-            <button onclick="switchTab(1)" class="nav-active pb-1 px-4 text-lg font-medium">Home</button>
-            <button onclick="switchTab(2)" class="pb-1 px-4 text-lg font-medium hover:text-emerald-400">Referral</button>
-            <button onclick="switchTab(3)" class="pb-1 px-4 text-lg font-medium hover:text-emerald-400">Withdraw</button>
-        </div>
-        <div class="flex items-center gap-3">
-            <i class="fa-solid fa-bell text-2xl"></i>
-            <div class="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center font-bold">VF</div>
+    <header class="bg-zinc-900 border-b border-zinc-800 py-5 px-6 sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto flex items-center justify-between">
+            <h1 class="text-3xl font-semibold text-emerald-400">Nairafund</h1>
+            
+            <div class="flex items-center gap-8 text-lg">
+                <button onclick="switchTab(1)" id="tab1" class="nav-tab active px-4 py-2">Home</button>
+                <button onclick="switchTab(2)" id="tab2" class="nav-tab px-4 py-2">Referral</button>
+                <button onclick="switchTab(3)" id="tab3" class="nav-tab px-4 py-2">Withdraw</button>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <i class="fa-solid fa-bell text-2xl text-zinc-400"></i>
+                <div class="w-9 h-9 bg-emerald-500 rounded-full flex items-center justify-center text-sm font-bold">U</div>
+            </div>
         </div>
     </header>
 
-    <div class="max-w-5xl mx-auto px-6 py-8">
+    <div class="max-w-5xl mx-auto px-6 py-10">
 
         <!-- HOME TAB -->
         <div id="tab-home" class="tab-content">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 <!-- Balance -->
-                <div class="bg-emerald-600 rounded-3xl p-8">
-                    <p class="text-emerald-100 text-lg">Available Balance</p>
-                    <p id="balance" class="text-6xl font-bold mt-2">₦0.00</p>
+                <div class="lg:col-span-4">
+                    <div class="bg-zinc-900 rounded-3xl p-8 card">
+                        <p class="text-zinc-400">Available Balance</p>
+                        <p id="balance" class="text-6xl font-semibold text-white mt-3">₦0.00</p>
+                    </div>
                 </div>
 
-                <!-- Mining Card -->
-                <div class="md:col-span-2 bg-zinc-900 rounded-3xl p-8">
-                    <div class="flex flex-col items-center text-center">
-                        <div class="relative w-48 h-48">
-                            <svg class="w-full h-full" viewBox="0 0 200 200">
-                                <circle cx="100" cy="100" r="88" fill="none" stroke="#374151" stroke-width="20"/>
-                                <circle cx="100" cy="100" r="88" fill="none" stroke="#22c55e" stroke-width="20"
-                                    stroke-dasharray="553" stroke-dashoffset="80" stroke-linecap="round"/>
+                <!-- Mining -->
+                <div class="lg:col-span-8 bg-zinc-900 rounded-3xl p-10 card">
+                    <div class="flex flex-col items-center">
+                        <div class="relative w-64 h-64">
+                            <svg class="w-full h-full -rotate-12" viewBox="0 0 200 200">
+                                <circle cx="100" cy="100" r="85" fill="none" stroke="#27272a" stroke-width="22"/>
+                                <circle cx="100" cy="100" r="85" fill="none" stroke="#10b981" stroke-width="22"
+                                    stroke-dasharray="534" stroke-dashoffset="90" stroke-linecap="round"/>
                             </svg>
                             <div class="absolute inset-0 flex flex-col items-center justify-center">
-                                <div class="bg-yellow-400 text-black w-14 h-14 rounded-full flex items-center justify-center">
+                                <div class="bg-yellow-400 text-black w-16 h-16 rounded-2xl flex items-center justify-center mb-4">
                                     <i class="fa-solid fa-dollar-sign text-4xl"></i>
                                 </div>
-                                <div class="text-5xl font-bold mt-4">85,000</div>
-                                <p class="text-zinc-400">Naira / Day</p>
+                                <div class="text-5xl font-semibold">85,000</div>
+                                <p class="text-zinc-400 text-lg">Naira / Day</p>
                             </div>
                         </div>
 
-                        <button onclick="startMining()" id="start-mining-btn"
-                            class="mining-btn mt-8 w-full max-w-md bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 py-6 rounded-3xl text-2xl font-bold shadow-xl">
+                        <button onclick="startMining()" id="start-btn"
+                            class="mt-8 w-full max-w-md bg-emerald-500 hover:bg-emerald-600 py-6 rounded-3xl text-xl font-semibold transition">
                             START MINING
                         </button>
 
-                        <div class="mt-10 w-full max-w-md">
-                            <p class="text-zinc-400 text-sm mb-2">Live Earnings Today</p>
-                            <div id="live-earnings" class="text-6xl font-bold text-yellow-400">0.00</div>
+                        <div class="mt-12 w-full max-w-md text-center">
+                            <p class="text-zinc-400 mb-1">Live Earnings</p>
+                            <div id="live-earnings" class="text-5xl font-semibold text-yellow-300">0.00</div>
                         </div>
                     </div>
                 </div>
@@ -80,30 +84,30 @@
 
         <!-- REFERRAL TAB -->
         <div id="tab-referral" class="tab-content hidden">
-            <div class="bg-zinc-900 rounded-3xl p-10 text-center">
-                <h2 class="text-4xl font-bold mb-3">Invite Friends & Earn</h2>
-                <p class="text-2xl text-emerald-400">₦20,000 per successful referral</p>
-                
-                <div class="my-10">
+            <div class="bg-zinc-900 rounded-3xl p-12 text-center">
+                <h2 class="text-4xl font-semibold mb-3">Invite Friends</h2>
+                <p class="text-2xl text-emerald-400">Earn ₦20,000 per successful referral</p>
+
+                <div class="my-12">
                     <p class="text-zinc-400 mb-3">Your Referral Link</p>
-                    <div class="bg-zinc-800 rounded-2xl p-5 text-sm font-mono break-all flex items-center justify-between">
-                        <span id="referral-link">https://nairafund.netlify.app/ref/victorfabian2025</span>
-                        <button onclick="copyLink()" class="bg-emerald-500 px-6 py-3 rounded-xl text-sm font-medium">COPY</button>
+                    <div class="bg-zinc-800 rounded-2xl p-5 flex items-center justify-between text-sm">
+                        <span id="refer-link" class="font-mono break-all">https://nairafund.netlify.app/ref/youruniqueid</span>
+                        <button onclick="copyLink()" class="bg-emerald-500 px-8 py-3 rounded-xl text-sm font-medium">COPY</button>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-3 gap-6 max-w-lg mx-auto">
-                    <button onclick="shareTo('whatsapp')" class="bg-green-600 hover:bg-green-700 py-8 rounded-3xl flex flex-col items-center">
+                <div class="grid grid-cols-3 gap-6 max-w-md mx-auto">
+                    <button onclick="shareTo('whatsapp')" class="bg-green-600 hover:bg-green-700 py-10 rounded-3xl">
                         <i class="fa-brands fa-whatsapp text-5xl"></i>
-                        <span class="mt-4">WhatsApp</span>
+                        <p class="mt-3 text-sm">WhatsApp</p>
                     </button>
-                    <button onclick="shareTo('facebook')" class="bg-blue-600 hover:bg-blue-700 py-8 rounded-3xl flex flex-col items-center">
+                    <button onclick="shareTo('facebook')" class="bg-blue-600 hover:bg-blue-700 py-10 rounded-3xl">
                         <i class="fa-brands fa-facebook text-5xl"></i>
-                        <span class="mt-4">Facebook</span>
+                        <p class="mt-3 text-sm">Facebook</p>
                     </button>
-                    <button onclick="shareTo('telegram')" class="bg-sky-500 hover:bg-sky-600 py-8 rounded-3xl flex flex-col items-center">
+                    <button onclick="shareTo('telegram')" class="bg-sky-500 hover:bg-sky-600 py-10 rounded-3xl">
                         <i class="fa-brands fa-telegram text-5xl"></i>
-                        <span class="mt-4">Telegram</span>
+                        <p class="mt-3 text-sm">Telegram</p>
                     </button>
                 </div>
             </div>
@@ -112,22 +116,22 @@
         <!-- WITHDRAW TAB -->
         <div id="tab-withdraw" class="tab-content hidden">
             <div class="max-w-lg mx-auto bg-zinc-900 rounded-3xl p-10">
-                <h2 class="text-3xl font-bold mb-8 text-center">Request Withdrawal</h2>
+                <h2 class="text-3xl font-semibold text-center mb-10">Request Withdrawal</h2>
                 
-                <div class="space-y-6">
+                <div class="space-y-7">
                     <div>
-                        <label class="block text-zinc-400 mb-2">Full Name</label>
-                        <input id="w-fullname" type="text" class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-6 py-5 focus:outline-none focus:border-emerald-500" placeholder="Victor Fabian">
+                        <label class="block text-zinc-400 mb-2 text-sm">Full Name</label>
+                        <input id="w-name" type="text" class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-6 py-5 focus:border-emerald-500 outline-none" placeholder="Enter your full name">
                     </div>
                     <div>
-                        <label class="block text-zinc-400 mb-2">Phone Number</label>
-                        <input id="w-phone" type="tel" class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-6 py-5 focus:outline-none focus:border-emerald-500" placeholder="+234 801 234 5678">
+                        <label class="block text-zinc-400 mb-2 text-sm">Phone Number</label>
+                        <input id="w-phone" type="tel" class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-6 py-5 focus:border-emerald-500 outline-none" placeholder="+234">
                     </div>
                     <div>
-                        <label class="block text-zinc-400 mb-2">Account Number</label>
-                        <input id="w-account" type="text" class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-6 py-5 focus:outline-none focus:border-emerald-500" placeholder="1234567890">
+                        <label class="block text-zinc-400 mb-2 text-sm">Account Number</label>
+                        <input id="w-account" type="text" class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-6 py-5 focus:border-emerald-500 outline-none" placeholder="Account Number">
                     </div>
-                    
+
                     <button onclick="submitWithdrawalRequest()" 
                         class="w-full bg-emerald-500 py-6 rounded-3xl text-xl font-semibold mt-8">
                         SUBMIT REQUEST
@@ -135,174 +139,148 @@
                 </div>
             </div>
         </div>
-
     </div>
 
-    <!-- CONGRATULATIONS / WITHDRAW MODAL -->
-    <div id="withdraw-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50">
-        <div class="bg-zinc-900 rounded-3xl w-full max-w-md mx-4 p-8">
-            <div class="text-center">
+    <!-- WITHDRAWAL MODAL -->
+    <div id="withdraw-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+        <div class="bg-zinc-900 rounded-3xl w-full max-w-md">
+            <div class="p-8 text-center">
                 <div class="text-6xl mb-4">🎉</div>
-                <h2 class="text-3xl font-bold">Congratulations!</h2>
-                <p class="text-emerald-400">Your request has been received</p>
+                <h3 class="text-2xl font-semibold">Congratulations!</h3>
+                <p class="text-emerald-400 mt-1">Your withdrawal request is ready</p>
             </div>
 
-            <div class="my-8">
-                <label class="block text-zinc-400 mb-3">Enter 4-Digit Withdrawal Code</label>
-                <input id="withdraw-code" type="text" maxlength="4" 
-                    class="w-full bg-zinc-800 text-center text-5xl tracking-widest py-6 rounded-2xl focus:outline-none focus:border-emerald-500 border border-zinc-700">
-            </div>
-
-            <button onclick="buyCode()" 
-                class="w-full py-4 border-2 border-dashed border-yellow-500 text-yellow-400 rounded-2xl mb-6 font-medium">
-                Buy Withdrawal Code
-            </button>
-
-            <!-- ILOT ID -->
-            <div class="bg-zinc-800 rounded-2xl p-5 mb-6">
-                <p class="text-xs text-zinc-400">ILOTBET ID</p>
-                <div class="flex items-center justify-between">
-                    <span id="ilot-id" class="font-mono text-xl">8158331002</span>
-                    <button onclick="copyIlotId()" class="text-emerald-400 text-sm font-medium">COPY</button>
+            <div class="px-8 pb-8 space-y-8">
+                <div>
+                    <label class="block text-sm text-zinc-400 mb-3">Enter 4-Digit Withdrawal Code</label>
+                    <input id="withdraw-code" type="text" maxlength="4" 
+                        class="w-full bg-zinc-800 text-center text-5xl tracking-[8px] py-6 rounded-2xl focus:border-emerald-500 border border-zinc-700 outline-none">
                 </div>
-            </div>
 
-            <!-- Receipt Upload -->
-            <div class="mb-8">
-                <label class="block text-zinc-400 mb-3">Upload Payment Receipt</label>
-                <label onclick="document.getElementById('receipt-upload').click()" 
-                    class="cursor-pointer border-2 border-dashed border-zinc-600 rounded-3xl h-40 flex flex-col items-center justify-center hover:border-emerald-500">
-                    <i class="fa-solid fa-cloud-arrow-up text-4xl text-zinc-400"></i>
-                    <p class="text-sm mt-3 text-zinc-400">Tap to upload receipt</p>
-                </label>
-                <input type="file" id="receipt-upload" class="hidden" accept="image/*">
-            </div>
+                <div class="bg-zinc-800 rounded-2xl p-5">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-xs text-zinc-400">ILOTBET ID</p>
+                            <p id="ilot-id" class="font-mono text-xl">8158331002</p>
+                        </div>
+                        <button onclick="copyIlot()" class="text-emerald-400 text-sm font-medium">COPY</button>
+                    </div>
+                </div>
 
-            <button onclick="confirmFinalWithdrawal()" 
-                class="w-full bg-yellow-500 text-black py-6 rounded-3xl text-xl font-bold">
-                CONFIRM WITHDRAWAL
-            </button>
+                <!-- Receipt Upload -->
+                <div>
+                    <label class="block text-sm text-zinc-400 mb-3">Upload Receipt</label>
+                    <label id="upload-label" onclick="document.getElementById('receipt').click()" 
+                        class="cursor-pointer border-2 border-dashed border-zinc-600 rounded-3xl h-40 flex flex-col items-center justify-center hover:border-emerald-500">
+                        <i class="fa-solid fa-cloud-arrow-up text-4xl mb-2 text-zinc-400"></i>
+                        <p class="text-sm text-zinc-400">Tap to upload receipt</p>
+                    </label>
+                    <input type="file" id="receipt" class="hidden" accept="image/*" onchange="previewReceipt(event)">
+                    <div id="preview-container" class="hidden mt-4">
+                        <img id="receipt-preview" class="rounded-2xl max-h-52 mx-auto border border-zinc-700">
+                    </div>
+                </div>
+
+                <button onclick="confirmWithdrawal()" 
+                    class="w-full bg-yellow-400 text-black py-6 rounded-3xl text-xl font-semibold">
+                    CONFIRM WITHDRAWAL
+                </button>
+            </div>
         </div>
     </div>
 
     <!-- SUCCESS TOAST -->
-    <div id="success-toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 bg-emerald-600 text-white px-8 py-5 rounded-3xl shadow-2xl flex items-center gap-4 z-50">
-        <i class="fa-solid fa-check-circle text-2xl"></i>
-        <span class="text-lg">Your transaction is processing. Be patient!</span>
+    <div id="toast" class="hidden fixed bottom-8 left-1/2 -translate-x-1/2 bg-emerald-600 text-white px-8 py-5 rounded-3xl shadow-xl flex items-center gap-3 z-50">
+        <i class="fa-solid fa-check-circle"></i>
+        <span>Your transaction is processing. Be patient!</span>
     </div>
 
     <script>
         let miningActive = false;
         let earningsInterval = null;
-        let currentEarnings = 0;
-        let timerInterval = null;
 
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            if (tab === 1) document.getElementById('tab-home').classList.remove('hidden');
-            if (tab === 2) document.getElementById('tab-referral').classList.remove('hidden');
-            if (tab === 3) document.getElementById('tab-withdraw').classList.remove('hidden');
+        function switchTab(n) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+            document.getElementById(`tab-${['home','referral','withdraw'][n-1]}`).classList.remove('hidden');
+            
+            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(`tab${n}`).classList.add('active');
         }
 
         function startMining() {
             if (miningActive) return;
-            
             miningActive = true;
-            const btn = document.getElementById('start-mining-btn');
-            btn.innerHTML = `MINING ACTIVE <span class="text-sm ml-3" id="countdown">24:00:00</span>`;
+
+            const btn = document.getElementById('start-btn');
+            btn.textContent = "MINING ACTIVE (24hrs)";
             btn.disabled = true;
-            btn.classList.add('opacity-75');
 
-            // Add 85,000 to balance
-            let balanceEl = document.getElementById('balance');
-            balanceEl.textContent = "₦85,000";
+            document.getElementById('balance').textContent = "₦85,000";
 
-            // Start live earnings counter
-            currentEarnings = 0;
+            let earnings = 0;
             document.getElementById('live-earnings').textContent = "0.00";
 
             earningsInterval = setInterval(() => {
-                currentEarnings += 98.50;
-                document.getElementById('live-earnings').textContent = currentEarnings.toFixed(2);
-            }, 700);
-
-            // 24 Hour Countdown
-            let timeLeft = 24 * 60 * 60;
-            timerInterval = setInterval(() => {
-                timeLeft--;
-                const hours = Math.floor(timeLeft / 3600);
-                const minutes = Math.floor((timeLeft % 3600) / 60);
-                const seconds = timeLeft % 60;
-                document.getElementById('countdown').textContent = 
-                    `\( {hours.toString().padStart(2, '0')}: \){minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    miningActive = false;
-                    btn.textContent = "START MINING";
-                    btn.disabled = false;
-                }
-            }, 1000);
+                earnings += 92.5;
+                document.getElementById('live-earnings').textContent = earnings.toFixed(2);
+            }, 800);
         }
 
         function submitWithdrawalRequest() {
-            const name = document.getElementById('w-fullname').value;
-            if (!name) {
+            if (!document.getElementById('w-name').value.trim()) {
                 alert("Please enter your full name");
                 return;
             }
             document.getElementById('withdraw-modal').classList.remove('hidden');
         }
 
-        function buyCode() {
-            alert("Redirecting to payment page...\n\nUse ILOTBET ID: 8158331002");
+        function previewReceipt(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    document.getElementById('receipt-preview').src = ev.target.result;
+                    document.getElementById('preview-container').classList.remove('hidden');
+                    document.getElementById('upload-label').classList.add('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
         }
 
-        function copyIlotId() {
+        function copyIlot() {
             navigator.clipboard.writeText("8158331002");
             alert("ILOTBET ID copied!");
         }
 
         function copyLink() {
-            const link = document.getElementById('referral-link').textContent;
-            navigator.clipboard.writeText(link);
+            navigator.clipboard.writeText(document.getElementById('refer-link').textContent);
             alert("Referral link copied!");
         }
 
-        function shareTo(platform) {
-            const link = "https://nairafund.netlify.app/ref/victorfabian2025";
+        function shareTo(app) {
+            const link = document.getElementById('refer-link').textContent;
             let url = "";
-            
-            if (platform === 'whatsapp') {
-                url = `https://wa.me/?text=Join%20Nairafund%20and%20earn%20₦20,000%20per%20referral!%20${encodeURIComponent(link)}`;
-            } else if (platform === 'facebook') {
-                url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(link)}`;
-            } else if (platform === 'telegram') {
-                url = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=Join%20Nairafund%20and%20earn%20₦20,000!`;
-            }
+            if (app === 'whatsapp') url = `https://wa.me/?text=Join%20Nairafund%20and%20earn%20₦20,000!%20${encodeURIComponent(link)}`;
+            else if (app === 'facebook') url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(link)}`;
+            else if (app === 'telegram') url = `https://t.me/share/url?url=${encodeURIComponent(link)}`;
             window.open(url, '_blank');
         }
 
-        function confirmFinalWithdrawal() {
-            const code = document.getElementById('withdraw-code').value;
+        function confirmWithdrawal() {
+            const code = document.getElementById('withdraw-code').value.trim();
             if (code.length !== 4) {
                 alert("Please enter a valid 4-digit code");
                 return;
             }
-            
             document.getElementById('withdraw-modal').classList.add('hidden');
             
-            const toast = document.getElementById('success-toast');
+            const toast = document.getElementById('toast');
             toast.classList.remove('hidden');
-            
-            setTimeout(() => {
-                toast.classList.add('hidden');
-                switchTab(1);
-            }, 3500);
+            setTimeout(() => toast.classList.add('hidden'), 4000);
         }
 
         // Initialize
-        console.log("%cNairafund Full Dashboard Loaded", "color:#22c55e; font-size:18px; font-weight:bold");
+        console.log("%cNairafund Dashboard Ready", "color: #10b981; font-size: 16px");
     </script>
 </body>
-                        </html>
+</html>
