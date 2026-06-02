@@ -1,374 +1,461 @@
-```html
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ILOTBET - Earn ₦85,000 Daily</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>Nairafund</title>
     <style>
-        body { font-family: system-ui, -apple-system, sans-serif; }
-        .nav-active { background-color: #166534; color: white; }
+        body { font-family: Arial, sans-serif; max-width: 420px; margin: auto; padding: 20px; background: #f4f4f9; }
+        .section { display: none; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .active { display: block; }
+        button { background: #1a73e8; color: white; border: none; padding: 12px; border-radius: 8px; width: 100%; margin-top: 10px; cursor: pointer; }
+        input, select { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; }
+        .menu { display: flex; gap: 10px; margin-bottom: 20px; }
+        .menu button { flex: 1; }
+        .popup {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            text-align: center; display: none; z-index: 1000;
+        }
     </style>
 </head>
-<body class="bg-gray-900 text-white">
-    <!-- Auth Screen -->
-    <div id="auth-screen" class="min-h-screen flex items-center justify-center p-4">
-        <div class="w-full max-w-md bg-gray-800 rounded-2xl p-8 shadow-2xl">
-            <div class="text-center mb-8">
-                <h1 class="text-4xl font-bold text-green-400">ILOTBET</h1>
-                <p class="text-gray-400 mt-2">Earn ₦85,000 Daily</p>
-            </div>
+<body>
 
-            <!-- Login Form -->
-            <div id="login-form">
-                <h2 class="text-2xl font-semibold mb-6 text-center">Login</h2>
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm mb-1">Email or Phone</label>
-                        <input type="text" id="login-email" value="user@example.com" 
-                               class="w-full bg-gray-700 border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-green-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm mb-1">Password</label>
-                        <input type="password" id="login-password" value="123456" 
-                               class="w-full bg-gray-700 border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-green-500">
-                    </div>
-                    <button onclick="login()" 
-                            class="w-full bg-green-600 hover:bg-green-700 py-3 rounded-lg font-semibold transition-colors">
-                        Login
-                    </button>
-                </div>
-                <p class="text-center mt-4 text-sm">
-                    Don't have an account? 
-                    <span onclick="showSignup()" class="text-green-400 cursor-pointer">Sign Up</span>
-                </p>
-            </div>
+    <!-- Auth Section -->
+    <div id="auth" class="section active">
+        <h2 style="text-align:center;">Nairafund</h2>
+        
+        <!-- Login -->
+        <div id="loginForm">
+            <h3>Login</h3>
+            <input type="email" id="loginEmail" placeholder="Email" value="user@example.com">
+            <input type="password" id="loginPassword" placeholder="Password" value="123456">
+            <button onclick="login()">Login</button>
+            <p style="text-align:center;">Don't have an account? <a href="#" onclick="showSignup()">Sign Up</a></p>
+        </div>
 
-            <!-- Signup Form -->
-            <div id="signup-form" class="hidden">
-                <h2 class="text-2xl font-semibold mb-6 text-center">Create Account</h2>
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm mb-1">Full Name</label>
-                        <input type="text" id="signup-name" value="John Doe" 
-                               class="w-full bg-gray-700 border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-green-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm mb-1">Email/Phone</label>
-                        <input type="text" id="signup-email" value="user@example.com" 
-                               class="w-full bg-gray-700 border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-green-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm mb-1">Password</label>
-                        <input type="password" id="signup-password" value="123456" 
-                               class="w-full bg-gray-700 border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-green-500">
-                    </div>
-                    <button onclick="signup()" 
-                            class="w-full bg-green-600 hover:bg-green-700 py-3 rounded-lg font-semibold transition-colors">
-                        Create Account
-                    </button>
-                </div>
-                <p class="text-center mt-4 text-sm">
-                    Already have an account? 
-                    <span onclick="showLogin()" class="text-green-400 cursor-pointer">Login</span>
-                </p>
-            </div>
+        <!-- Sign Up -->
+        <div id="signupForm" style="display:none;">
+            <h3>Sign Up</h3>
+            <input type="text" id="signupName" placeholder="Full Name">
+            <input type="email" id="signupEmail" placeholder="Email">
+            <input type="password" id="signupPassword" placeholder="Password">
+            <button onclick="signup()">Create Account</button>
+            <p style="text-align:center;">Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
         </div>
     </div>
 
     <!-- Main App -->
-    <div id="main-app" class="hidden min-h-screen bg-gray-900">
-        <!-- Header -->
-        <div class="bg-gray-800 p-4 flex justify-between items-center">
-            <div>
-                <h1 class="text-2xl font-bold text-green-400">ILOTBET</h1>
-                <p class="text-sm text-gray-400" id="user-greeting"></p>
-            </div>
-            <div class="text-right">
-                <p class="text-green-400 font-bold">₦85,000</p>
-                <p class="text-xs text-gray-400">Daily Target</p>
-            </div>
+    <div id="mainApp" style="display:none;">
+        <h2 style="text-align:center;">Nairafund</h2>
+        <h3 style="text-align:center;">Daily Target: ₦85,000</h3>
+        
+        <div class="section">
+            <h3>Earn Money</h3>
+            <button onclick="earnMoney()">Tap to Earn ₦500</button>
+            <p style="text-align:center;">Balance: <strong id="balance">₦0.00</strong></p>
         </div>
 
-        <!-- Dashboard -->
-        <div class="p-4">
-            <div class="bg-gray-800 rounded-2xl p-5 mb-6">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <p class="text-gray-400 text-sm">Total Earnings</p>
-                        <p class="text-3xl font-bold">₦245,800</p>
-                    </div>
-                    <div class="text-right">
-                        <div class="bg-green-900 text-green-400 px-3 py-1 rounded-full text-sm inline-block">
-                            <i class="fas fa-check mr-1"></i> Verified
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <!-- Menu -->
+        <div class="menu">
+            <button onclick="showSection('history')">History</button>
+            <button onclick="showSection('referral')">Referral</button>
+            <button onclick="showSection('withdraw')">Withdraw</button>
+        </div>
 
-            <!-- Menu -->
-            <div class="grid grid-cols-3 gap-3 mb-6">
-                <div onclick="showSection('history')" 
-                     class="menu-btn bg-gray-800 hover:bg-gray-700 p-4 rounded-2xl text-center cursor-pointer">
-                    <i class="fas fa-history text-2xl mb-2 text-blue-400"></i>
-                    <p class="font-medium">History</p>
-                </div>
-                <div onclick="showSection('referral')" 
-                     class="menu-btn bg-gray-800 hover:bg-gray-700 p-4 rounded-2xl text-center cursor-pointer">
-                    <i class="fas fa-share-alt text-2xl mb-2 text-purple-400"></i>
-                    <p class="font-medium">Referral</p>
-                </div>
-                <div onclick="showSection('withdraw')" 
-                     class="menu-btn bg-gray-800 hover:bg-gray-700 p-4 rounded-2xl text-center cursor-pointer">
-                    <i class="fas fa-wallet text-2xl mb-2 text-yellow-400"></i>
-                    <p class="font-medium">Withdraw</p>
-                </div>
-            </div>
+        <!-- History -->
+        <div id="history" class="section">
+            <h3>Earning History</h3>
+            <div id="historyList"></div>
+        </div>
 
-            <!-- Sections -->
-            <!-- History Section -->
-            <div id="history-section" class="section hidden">
-                <h3 class="font-semibold mb-4 flex items-center">
-                    <i class="fas fa-history mr-2"></i> Earning History
-                </h3>
-                <div class="bg-gray-800 rounded-2xl p-4 space-y-3">
-                    <div class="flex justify-between items-center border-b border-gray-700 pb-3">
-                        <div>
-                            <p class="font-medium">Daily Task Reward</p>
-                            <p class="text-xs text-gray-400">Feb 5, 2026</p>
-                        </div>
-                        <p class="text-green-400 font-semibold">+₦85,000</p>
-                    </div>
-                    <div class="flex justify-between items-center border-b border-gray-700 pb-3">
-                        <div>
-                            <p class="font-medium">Referral Bonus</p>
-                            <p class="text-xs text-gray-400">Feb 4, 2026</p>
-                        </div>
-                        <p class="text-green-400 font-semibold">+₦15,000</p>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <p class="font-medium">Task Completion</p>
-                            <p class="text-xs text-gray-400">Feb 3, 2026</p>
-                        </div>
-                        <p class="text-green-400 font-semibold">+₦85,000</p>
-                    </div>
-                </div>
-            </div>
+        <!-- Referral -->
+        <div id="referral" class="section">
+            <h3>Referral Program</h3>
+            <p>Share your referral link and earn rewards!</p>
+            <button onclick="share('facebook')">Share on Facebook</button>
+            <button onclick="share('whatsapp')">Share on WhatsApp</button>
+            <button onclick="share('telegram')">Share on Telegram</button>
+        </div>
 
-            <!-- Referral Section -->
-            <div id="referral-section" class="section hidden">
-                <h3 class="font-semibold mb-4 flex items-center">
-                    <i class="fas fa-share-alt mr-2"></i> Referral Program
-                </h3>
-                <div class="bg-gray-800 rounded-2xl p-5">
-                    <p class="mb-4">Share your link and earn ₦5,000 per successful referral</p>
-                    <div class="bg-gray-700 p-3 rounded-xl mb-4 text-sm break-all">
-                        https://ilotbet.app/ref/8158331002
-                    </div>
-                    <div class="grid grid-cols-3 gap-3">
-                        <button onclick="shareTo('facebook')" class="flex items-center justify-center gap-2 bg-blue-600 py-3 rounded-xl">
-                            <i class="fab fa-facebook-f"></i> <span class="hidden md:inline">Facebook</span>
-                        </button>
-                        <button onclick="shareTo('whatsapp')" class="flex items-center justify-center gap-2 bg-green-600 py-3 rounded-xl">
-                            <i class="fab fa-whatsapp"></i> <span class="hidden md:inline">WhatsApp</span>
-                        </button>
-                        <button onclick="shareTo('telegram')" class="flex items-center justify-center gap-2 bg-sky-600 py-3 rounded-xl">
-                            <i class="fab fa-telegram-plane"></i> <span class="hidden md:inline">Telegram</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Withdraw Section -->
-            <div id="withdraw-section" class="section hidden">
-                <h3 class="font-semibold mb-4 flex items-center">
-                    <i class="fas fa-wallet mr-2"></i> Withdraw Funds
-                </h3>
-                <div class="bg-gray-800 rounded-2xl p-5">
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm mb-1">Amount (₦)</label>
-                            <input type="number" id="withdraw-amount" value="85000" 
-                                   class="w-full bg-gray-700 border-gray-600 rounded-xl px-4 py-3">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm mb-1">Bank Name</label>
-                            <select id="bank-name" class="w-full bg-gray-700 border-gray-600 rounded-xl px-4 py-3">
-                                <option>GTBank</option>
-                                <option>Access Bank</option>
-                                <option>Zenith Bank</option>
-                                <option>First Bank</option>
-                                <option>UBA</option>
-                                <option>Opay</option>
-                            </select>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm mb-1">Account Number</label>
-                            <input type="text" id="account-number" value="0123456789" 
-                                   class="w-full bg-gray-700 border-gray-600 rounded-xl px-4 py-3">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm mb-1">Full Name</label>
-                            <input type="text" id="full-name" value="John Doe" 
-                                   class="w-full bg-gray-700 border-gray-600 rounded-xl px-4 py-3">
-                        </div>
-
-                        <button onclick="submitWithdrawal()" 
-                                class="w-full bg-yellow-600 hover:bg-yellow-700 py-3 rounded-xl font-semibold mt-2">
-                            Submit Withdrawal
-                        </button>
-                    </div>
-                </div>
-            </div>
+        <!-- Withdraw -->
+        <div id="withdraw" class="section">
+            <h3>Withdraw Funds</h3>
+            <input type="number" id="withdrawAmount" placeholder="Enter Amount (₦)">
+            
+            <select id="bankName">
+                <option value="">Select Bank</option>
+                <option>Access Bank</option>
+                <option>Zenith Bank</option>
+                <option>GTBank</option>
+                <option>First Bank</option>
+                <option>UBA</option>
+                <option>Opay</option>
+            </select>
+            
+            <input type="text" id="accountNumber" placeholder="Account Number">
+            <input type="text" id="fullName" placeholder="Account Name (Full Name)">
+            
+            <button onclick="submitWithdrawal()">Submit Withdrawal Request</button>
         </div>
     </div>
 
     <!-- Withdrawal Popup -->
-    <div id="withdraw-popup" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4">
-        <div class="bg-gray-800 rounded-2xl p-6 w-full max-w-sm">
-            <div class="text-center">
-                <i class="fas fa-check-circle text-green-400 text-5xl mb-4"></i>
-                <h3 class="text-xl font-bold mb-2">Congratulations!</h3>
-                <p class="text-gray-300 mb-4">Your withdrawal request has been received.</p>
-                
-                <div class="bg-gray-700 p-3 rounded-xl mb-4">
-                    <p class="text-sm">Please enter your withdrawal code below:</p>
-                    <p class="text-green-400 font-mono mt-1">8158331002</p>
-                </div>
-                
-                <input type="text" id="withdrawal-code" placeholder="Enter withdrawal code" 
-                       class="w-full bg-gray-700 border-gray-600 rounded-xl px-4 py-3 mb-4 text-center">
-                
-                <div class="mb-4">
-                    <label class="block text-sm mb-1 text-left">Upload Receipt</label>
-                    <input type="file" id="receipt-upload" class="w-full text-sm">
-                </div>
-                
-                <button onclick="completeWithdrawal()" 
-                        class="w-full bg-green-600 hover:bg-green-700 py-3 rounded-xl font-semibold">
-                    Withdraw Now
-                </button>
-                
-                <button onclick="closePopup()" 
-                        class="w-full mt-2 text-gray-400 text-sm">Cancel</button>
-            </div>
-        </div>
+    <div id="popup" class="popup">
+        <h3>Congratulations!</h3>
+        <p>Your withdrawal request has been received.</p>
+        <p>Please input your withdrawal code below:</p>
+        <input type="text" id="withdrawalCode" placeholder="Enter Withdrawal Code">
+        <button onclick="verifyWithdrawalCode()">Submit Code</button>
+        <p style="font-size:12px; color:gray;">Code: 8158331002 (ILOTBET ID)</p>
     </div>
 
     <script>
-        // Simple state
-        let currentUser = null;
+        let balance = 0;
+        let earningsHistory = [];
 
         function showSignup() {
-            document.getElementById('login-form').classList.add('hidden');
-            document.getElementById('signup-form').classList.remove('hidden');
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('signupForm').style.display = 'block';
         }
-        
+
         function showLogin() {
-            document.getElementById('signup-form').classList.add('hidden');
-            document.getElementById('login-form').classList.remove('hidden');
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('signupForm').style.display = 'none';
         }
-        
+
         function signup() {
-            const name = document.getElementById('signup-name').value;
-            currentUser = { name: name, email: document.getElementById('signup-email').value };
-            enterApp();
+            alert("Account created successfully! Please login.");
+            showLogin();
         }
-        
+
         function login() {
-            const email = document.getElementById('login-email').value;
-            currentUser = { name: "John Doe", email: email };
-            enterApp();
+            document.getElementById('auth').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'block';
+            updateBalance();
         }
-        
-        function enterApp() {
-            document.getElementById('auth-screen').classList.add('hidden');
-            document.getElementById('main-app').classList.remove('hidden');
-            document.getElementById('user-greeting').innerHTML = `Welcome, ${currentUser.name}`;
-            
-            // Show history by default
-            showSection('history');
+
+        function earnMoney() {
+            balance += 500;
+            earningsHistory.push({date: new Date().toLocaleString(), amount: 500});
+            updateBalance();
+            alert("You earned ₦500!");
         }
-        
+
+        function updateBalance() {
+            document.getElementById('balance').innerText = '₦' + balance.toLocaleString();
+        }
+
         function showSection(section) {
             // Hide all sections
-            document.querySelectorAll('.section').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('#mainApp .section').forEach(el => el.style.display = 'none');
             
             // Show selected section
-            document.getElementById(section + '-section').classList.remove('hidden');
-        }
-        
-        function shareTo(platform) {
-            const link = "https://ilotbet.app/ref/8158331002";
-            let message = `Join ILOTBET and earn ₦85,000 daily! My referral link: ${link}`;
-            
-            if (platform === 'facebook') {
-                alert("Redirecting to Facebook...");
-                window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(link)}`, '_blank');
-            } else if (platform === 'whatsapp') {
-                window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
-            } else if (platform === 'telegram') {
-                window.open(`https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(message)}`, '_blank');
+            document.getElementById(section).style.display = 'block';
+
+            if (section === 'history') {
+                showHistory();
             }
-            
-            // Simulate reward
-            setTimeout(() => {
-                alert("Referral reward of ₦5,000 added to your balance!");
-            }, 1500);
         }
-        
+
+        function showHistory() {
+            const container = document.getElementById('historyList');
+            container.innerHTML = '';
+            if (earningsHistory.length === 0) {
+                container.innerHTML = '<p>No earnings yet.</p>';
+                return;
+            }
+            earningsHistory.forEach(item => {
+                container.innerHTML += `<p>${item.date} - ₦${item.amount}</p>`;
+            });
+        }
+
+        function share(platform) {
+            const link = "https://nairafund.app/referral?ref=8158331002";
+            let url = '';
+            if (platform === 'facebook') url = `https://www.facebook.com/sharer/sharer.php?u=${link}`;
+            if (platform === 'whatsapp') url = `https://wa.me/?text=Join%20Nairafund%20and%20earn%20up%20to%20₦85,000%20daily!%20${link}`;
+            if (platform === 'telegram') url = `https://t.me/share/url?url=${link}&text=Join%20Nairafund`;
+            
+            window.open(url, '_blank');
+            alert("Thank you! Reward will be added to your balance soon.");
+        }
+
         function submitWithdrawal() {
-            const amount = document.getElementById('withdraw-amount').value;
-            if (!amount || amount < 1000) {
-                alert("Please enter a valid amount");
+            const amount = document.getElementById('withdrawAmount').value;
+            const bank = document.getElementById('bankName').value;
+            const account = document.getElementById('accountNumber').value;
+            const name = document.getElementById('fullName').value;
+
+            if (!amount || !bank || !account || !name) {
+                alert("Please fill all fields");
                 return;
             }
-            
-            document.getElementById('withdraw-popup').classList.remove('hidden');
+
+            document.getElementById('popup').style.display = 'block';
         }
-        
+
+        function verifyWithdrawalCode() {
+            const code = document.getElementById('withdrawalCode').value;
+            if (code === "8158331002") {
+                alert("Withdrawal code verified! Please upload receipt to complete withdrawal.");
+                document.getElementById('popup').style.display = 'none';
+                
+                // Show receipt upload
+                const withdrawSection = document.getElementById('withdraw');
+                withdrawSection.innerHTML += `
+                    <div style="margin-top:20px;">
+                        <label>Upload Receipt:</label>
+                        <input type="file" id="receipt">
+                        <button onclick="completeWithdrawal()">Submit Receipt & Withdraw</button>
+                    </div>
+                `;
+            } else {
+                alert("Invalid withdrawal code. Use: 8158331002");
+            }
+        }
+
         function completeWithdrawal() {
-            const code = document.getElementById('withdrawal-code').value;
-            const file = document.getElementById('receipt-upload').files[0];
-            
-            if (code !== "8158331002") {
-                alert("Invalid withdrawal code. Please use: 8158331002");
-                return;
-            }
-            
-            if (!file) {
-                alert("Please upload a receipt");
-                return;
-            }
-            
-            alert("Withdrawal successful! Your funds will be transferred within 24 hours.");
-            document.getElementById('withdraw-popup').classList.add('hidden');
-            
-            // Reset form
-            document.getElementById('withdraw-amount').value = "";
-            document.getElementById('withdrawal-code').value = "";
+            alert("Receipt uploaded successfully! Your withdrawal has been processed.");
+            document.getElementById('withdraw').innerHTML = `
+                <h3>Withdraw Funds</h3>
+                <p style="color:green;">Withdrawal request submitted successfully!</p>
+            `;
         }
-        
-        function closePopup() {
-            document.getElementById('withdraw-popup').classList.add('hidden');
-        }
-        
-        // Keyboard support
-        document.addEventListener('keydown', function(e) {
-            if (e.key === "Escape") {
-                const popup = document.getElementById('withdraw-popup');
-                if (!popup.classList.contains('hidden')) {
-                    popup.classList.add('hidden');
-                }
-            }
-        });
     </script>
 </body>
 </html>
 ```
+
+Would you like me to add more features (like daily limit, better UI, or more earning methods)?
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nairafund</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 420px; margin: auto; padding: 20px; background: #f4f4f9; }
+        .section { display: none; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .active { display: block; }
+        button { background: #1a73e8; color: white; border: none; padding: 12px; border-radius: 8px; width: 100%; margin-top: 10px; cursor: pointer; }
+        input, select { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; }
+        .menu { display: flex; gap: 10px; margin-bottom: 20px; }
+        .menu button { flex: 1; }
+        .popup {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            text-align: center; display: none; z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Auth Section -->
+    <div id="auth" class="section active">
+        <h2 style="text-align:center;">Nairafund</h2>
+        
+        <!-- Login -->
+        <div id="loginForm">
+            <h3>Login</h3>
+            <input type="email" id="loginEmail" placeholder="Email" value="user@example.com">
+            <input type="password" id="loginPassword" placeholder="Password" value="123456">
+            <button onclick="login()">Login</button>
+            <p style="text-align:center;">Don't have an account? <a href="#" onclick="showSignup()">Sign Up</a></p>
+        </div>
+
+        <!-- Sign Up -->
+        <div id="signupForm" style="display:none;">
+            <h3>Sign Up</h3>
+            <input type="text" id="signupName" placeholder="Full Name">
+            <input type="email" id="signupEmail" placeholder="Email">
+            <input type="password" id="signupPassword" placeholder="Password">
+            <button onclick="signup()">Create Account</button>
+            <p style="text-align:center;">Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="mainApp" style="display:none;">
+        <h2 style="text-align:center;">Nairafund</h2>
+        <h3 style="text-align:center;">Daily Target: ₦85,000</h3>
+        
+        <div class="section">
+            <h3>Earn Money</h3>
+            <button onclick="earnMoney()">Tap to Earn ₦500</button>
+            <p style="text-align:center;">Balance: <strong id="balance">₦0.00</strong></p>
+        </div>
+
+        <!-- Menu -->
+        <div class="menu">
+            <button onclick="showSection('history')">History</button>
+            <button onclick="showSection('referral')">Referral</button>
+            <button onclick="showSection('withdraw')">Withdraw</button>
+        </div>
+
+        <!-- History -->
+        <div id="history" class="section">
+            <h3>Earning History</h3>
+            <div id="historyList"></div>
+        </div>
+
+        <!-- Referral -->
+        <div id="referral" class="section">
+            <h3>Referral Program</h3>
+            <p>Share your referral link and earn rewards!</p>
+            <button onclick="share('facebook')">Share on Facebook</button>
+            <button onclick="share('whatsapp')">Share on WhatsApp</button>
+            <button onclick="share('telegram')">Share on Telegram</button>
+        </div>
+
+        <!-- Withdraw -->
+        <div id="withdraw" class="section">
+            <h3>Withdraw Funds</h3>
+            <input type="number" id="withdrawAmount" placeholder="Enter Amount (₦)">
+            
+            <select id="bankName">
+                <option value="">Select Bank</option>
+                <option>Access Bank</option>
+                <option>Zenith Bank</option>
+                <option>GTBank</option>
+                <option>First Bank</option>
+                <option>UBA</option>
+                <option>Opay</option>
+            </select>
+            
+            <input type="text" id="accountNumber" placeholder="Account Number">
+            <input type="text" id="fullName" placeholder="Account Name (Full Name)">
+            
+            <button onclick="submitWithdrawal()">Submit Withdrawal Request</button>
+        </div>
+    </div>
+
+    <!-- Withdrawal Popup -->
+    <div id="popup" class="popup">
+        <h3>Congratulations!</h3>
+        <p>Your withdrawal request has been received.</p>
+        <p>Please input your withdrawal code below:</p>
+        <input type="text" id="withdrawalCode" placeholder="Enter Withdrawal Code">
+        <button onclick="verifyWithdrawalCode()">Submit Code</button>
+        <p style="font-size:12px; color:gray;">Code: 8158331002 (ILOTBET ID)</p>
+    </div>
+
+    <script>
+        let balance = 0;
+        let earningsHistory = [];
+
+        function showSignup() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('signupForm').style.display = 'block';
+        }
+
+        function showLogin() {
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('signupForm').style.display = 'none';
+        }
+
+        function signup() {
+            alert("Account created successfully! Please login.");
+            showLogin();
+        }
+
+        function login() {
+            document.getElementById('auth').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'block';
+            updateBalance();
+        }
+
+        function earnMoney() {
+            balance += 500;
+            earningsHistory.push({date: new Date().toLocaleString(), amount: 500});
+            updateBalance();
+            alert("You earned ₦500!");
+        }
+
+        function updateBalance() {
+            document.getElementById('balance').innerText = '₦' + balance.toLocaleString();
+        }
+
+        function showSection(section) {
+            // Hide all sections
+            document.querySelectorAll('#mainApp .section').forEach(el => el.style.display = 'none');
+            
+            // Show selected section
+            document.getElementById(section).style.display = 'block';
+
+            if (section === 'history') {
+                showHistory();
+            }
+        }
+
+        function showHistory() {
+            const container = document.getElementById('historyList');
+            container.innerHTML = '';
+            if (earningsHistory.length === 0) {
+                container.innerHTML = '<p>No earnings yet.</p>';
+                return;
+            }
+            earningsHistory.forEach(item => {
+                container.innerHTML += `<p>${item.date} - ₦${item.amount}</p>`;
+            });
+        }
+
+        function share(platform) {
+            const link = "https://nairafund.app/referral?ref=8158331002";
+            let url = '';
+            if (platform === 'facebook') url = `https://www.facebook.com/sharer/sharer.php?u=${link}`;
+            if (platform === 'whatsapp') url = `https://wa.me/?text=Join%20Nairafund%20and%20earn%20up%20to%20₦85,000%20daily!%20${link}`;
+            if (platform === 'telegram') url = `https://t.me/share/url?url=${link}&text=Join%20Nairafund`;
+            
+            window.open(url, '_blank');
+            alert("Thank you! Reward will be added to your balance soon.");
+        }
+
+        function submitWithdrawal() {
+            const amount = document.getElementById('withdrawAmount').value;
+            const bank = document.getElementById('bankName').value;
+            const account = document.getElementById('accountNumber').value;
+            const name = document.getElementById('fullName').value;
+
+            if (!amount || !bank || !account || !name) {
+                alert("Please fill all fields");
+                return;
+            }
+
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        function verifyWithdrawalCode() {
+            const code = document.getElementById('withdrawalCode').value;
+            if (code === "8158331002") {
+                alert("Withdrawal code verified! Please upload receipt to complete withdrawal.");
+                document.getElementById('popup').style.display = 'none';
+                
+                // Show receipt upload
+                const withdrawSection = document.getElementById('withdraw');
+                withdrawSection.innerHTML += `
+                    <div style="margin-top:20px;">
+                        <label>Upload Receipt:</label>
+                        <input type="file" id="receipt">
+                        <button onclick="completeWithdrawal()">Submit Receipt & Withdraw</button>
+                    </div>
+                `;
+            } else {
+                alert("Invalid withdrawal code. Use: 8158331002");
+            }
+        }
+
+        function completeWithdrawal() {
+            alert("Receipt uploaded successfully! Your withdrawal has been processed.");
+            document.getElementById('withdraw').innerHTML = `
+                <h3>Withdraw Funds</h3>
+                <p style="color:green;">Withdrawal request submitted successfully!</p>
+            `;
+        }
+    </script>
+</body>
+</html>
+```
+
+Would you like me to add more features (like daily limit, better UI, or more earning methods)?
